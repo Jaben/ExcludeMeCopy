@@ -202,16 +202,16 @@ namespace ExcludeMeCopy
 
             if (copy.Recurse)
             {
-                foreach (var directory in Directory.GetDirectories(currentDirectory, "*.*", SearchOption.TopDirectoryOnly))
+                foreach (string directory in Directory.GetDirectories(currentDirectory, "*.*", SearchOption.TopDirectoryOnly))
                 {
-                    if (!directory.Matches(excludeLike))
-                    {
-                        copyCount += CopyStructure(copy, excludeLike, directory, token);
-                    }
-                    else
+                    if ((directory + Path.DirectorySeparatorChar).Matches(excludeLike))
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.WriteLine(@" * Directory ""{0}"" Ignored", GetDisplayPath(directory));
+                    }
+                    else
+                    {
+                        copyCount += CopyStructure(copy, excludeLike, directory, token);
                     }
                 }
             }
